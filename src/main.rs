@@ -37,10 +37,10 @@ fn main() {
     print!("{} -> {} -> {}\n", message, encrypted, decrypted);
 
     // TODO: Insecure. Need good entropy source (riscv asm?)
-    // Use seed register to get 16 bits of entropy at a time.
-    // Combine them using sha to get 256 bits of entropy,
-    // and use that as byte array seed to ChaChaRng.
-    let mut rng: ChaChaRng = ChaChaRng::seed_from_u64(0);
+    // Use seed register to get 16 bits of entropy at a time,
+    // combining them using sha to get 256 bits of entropy.
+    let entropy = [0u8; 32];
+    let mut rng: ChaChaRng = ChaChaRng::from_seed(entropy);
     let mut buf = [0u8; 128];
 
     rng.fill_bytes(&mut buf[..]);
@@ -59,19 +59,10 @@ fn main() {
     let exponent = U256::from_u64(13);
     let modulus = U256::from_u64(497);
 
-    // Create a NonZero modulus (required for DynResidueParams)
     let non_zero_modulus = NonZero::new(modulus).unwrap();
-
-    // Create DynResidueParams
     let params = DynResidueParams::new(&non_zero_modulus);
-
-    // Create a DynResidue from the base
     let residue_base = DynResidue::new(&base, params);
-
-    // Perform modular exponentiation
     let result = residue_base.pow(&exponent);
-
-    // Convert the result back to U256
     let result_u256 = result.retrieve();
 
     print!("Result: {}\n", result_u256);
