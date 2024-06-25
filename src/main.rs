@@ -1,10 +1,7 @@
 #![no_std]
 #![no_main]
 
-use nexus_rt::{
-    print,
-    Write,
-};
+use nexus_rt::{print, Write};
 
 use nexus_project::rsa::generate_rsa_key;
 

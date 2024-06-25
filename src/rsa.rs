@@ -38,7 +38,7 @@ pub fn generate_rsa_key() -> RsaKey {
 
     // Choose e such that 1 < e < φ(n) and gcd(e, φ(n)) = 1
     // 65537 is a common choice, but too large for our small primes
-    let e: u64 = 17;    
+    let e: u64 = 17;
 
     let mut d: u64 = 2;
     while (d * e) % phi != 1 {
