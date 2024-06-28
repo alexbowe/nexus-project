@@ -8,7 +8,18 @@ version = "0.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0dc92fb57ca44df6db8059111ab3af99a63d5d0f8375d9972e319a379c6bab76"
 dependencies = [
+ "rand_core",
  "subtle",
+]
+
+[[package]]
+name = "crypto-primes"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97a4eeb0a8686cfc94242c8860628627206a2b24148d6ab8f5d41c708438582f"
+dependencies = [
+ "crypto-bigint",
+ "rand_core",
 ]
 
 [[package]]
@@ -16,8 +27,10 @@ name = "nexus-project"
 version = "0.1.0"
 dependencies = [
  "crypto-bigint",
+ "crypto-primes",
  "nexus-rt",
  "rand_chacha",
+ "rand_core",
 ]
 
 [[package]]
