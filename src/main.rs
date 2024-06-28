@@ -18,9 +18,10 @@ fn main() {
     let mut rng = ChaCha8Rng::from_seed(entropy);
 
     let rsa_key = RsaKey::new(&mut rng);
+    print!("Generated RSA Key\n");
 
     // TODO: Add encode() function to encode strings
-    let message = BigUint::from_u64(42);
+    let message = BigUint::from_u32(42);
     let encrypted = rsa_key.encrypt(message);
     let decrypted = rsa_key.decrypt(encrypted);
     // assert_eq!(message, decrypted);

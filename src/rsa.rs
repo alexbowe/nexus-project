@@ -1,10 +1,8 @@
-use core::ops::AddAssign;
-
 use nexus_rt::{print, Write};
 
 use crypto_bigint::{
     modular::runtime_mod::{DynResidue, DynResidueParams},
-    Checked, CheckedSub, NonZero,
+    CheckedAdd, CheckedMul, CheckedSub, NonZero,
 };
 
 pub use crypto_bigint::{Random, Uint, U128, U256};
@@ -13,7 +11,7 @@ use crypto_primes::generate_prime_with_rng;
 use rand_core::CryptoRngCore;
 
 // Should use at least 4096 bits in production.
-// Consider making RsaKey struct generic to
+// TODO: Make RsaKey struct generic to
 // support user specified widths.
 const BITWIDTH: usize = 64;
 const LIMBS: usize = BITWIDTH / 32;
@@ -54,18 +52,20 @@ impl RsaKey {
 }
 
 fn generate_rsa_key<R: CryptoRngCore>(rng: &mut R) -> RsaKey {
-    //let p: HalfSizeBigUint = HalfSizeBigUint::from_u64(61);
-    //let q: HalfSizeBigUint = HalfSizeBigUint::from_u64(53);
-    let p = generate_random_prime(rng);
-    let q = generate_random_prime(rng);
+    //let p = generate_random_prime(rng);
+    //let q = generate_random_prime(rng);
+    let p = HalfSizeBigUint::from_u32(61);
+    let q = HalfSizeBigUint::from_u32(53);
+    
     let n = p * q;
-
+    
     let phi = totient(p, q);
 
     // Choose e such that 1 < e < φ(n) and gcd(e, φ(n)) = 1
     // 65537 is a common choice, but lets check our assumptions
-    let e = BigUint::from_u64(65537);
-    assert!(BigUint::ONE < e && e < phi); // 17 for p=61, q=53
+    //let e = BigUint::from_u64(65537);
+    let e = BigUint::from_u32(17);
+    assert!(BigUint::ONE < e && e < phi);
     assert!(gcd(e, phi) == BigUint::ONE);
 
     let d = mod_inverse(&e, &phi);
@@ -89,11 +89,6 @@ fn modulo(a: &BigUint, b: &BigUint) -> BigUint {
     a.div_rem(&NonZero::new(*b).unwrap()).1
 }
 
-#[inline]
-fn divide(a: &BigUint, b: &BigUint) -> BigUint {
-    a.div_rem(&NonZero::new(*b).unwrap()).0
-}
-
 fn gcd(mut a: BigUint, mut b: BigUint) -> BigUint {
     while b != BigUint::ZERO {
         let temp = b;
@@ -104,11 +99,11 @@ fn gcd(mut a: BigUint, mut b: BigUint) -> BigUint {
 }
 
 fn mod_inverse(a: &BigUint, m: &BigUint) -> BigUint {
-    const DOUBLE_WIDTH: usize = LIMBS*2;
-    let mut d: Uint<DOUBLE_WIDTH> = Uint::from_u64(2);
-    // while (d * a).div_rem(&NonZero::new(*m).unwrap()).1 != BigUint::ONE {
-    //     d += BigUint::ONE;
-    // }
+    // TODO: Implement a faster inverse mod algorithm
+    let mut d = BigUint::from_u32(2);
+    while d.checked_mul(a).unwrap().div_rem(&NonZero::new(*m).unwrap()).1 != BigUint::ONE {
+        d = d.checked_add(&BigUint::ONE).unwrap();
+    }
     d
 }
 
