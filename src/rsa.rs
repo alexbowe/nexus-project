@@ -104,7 +104,8 @@ fn gcd(mut a: BigUint, mut b: BigUint) -> BigUint {
 }
 
 fn mod_inverse(a: &BigUint, m: &BigUint) -> BigUint {
-    let mut d = BigUint::from_u64(2);
+    const DOUBLE_WIDTH: usize = LIMBS*2;
+    let mut d: Uint<DOUBLE_WIDTH> = Uint::from_u64(2);
     // while (d * a).div_rem(&NonZero::new(*m).unwrap()).1 != BigUint::ONE {
     //     d += BigUint::ONE;
     // }
