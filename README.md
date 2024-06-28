@@ -1,5 +1,6 @@
-# nexus-project
+# RSA on Nexus zkVM
 
+*Version: 0.0.1*
 
 ## Introduction
 
@@ -73,3 +74,12 @@ cargo nexus run    # Compile and execute, generating a trace
 cargo nexus prove  # Generate a proof of the execution trace
 cargo nexus verify # Verify the proof
 ```
+
+Proving took a long time on my local machine, so I haven't finished a
+complete proof yet. I look forward to testing it with the Nexus
+network.
+
+## License
+
+If this is useful to you please feel free to use it however you wish.
+No attribution or licensing required.
