@@ -7,7 +7,7 @@ use nexus_project::rsa::generate_rsa_key;
 
 use crypto_bigint::{
     modular::runtime_mod::{DynResidue, DynResidueParams},
-    Encoding, NonZero, Uint, U1024, U2048, U256,
+    Encoding, NonZero, U1024, U2048, U256,
 };
 
 use rand_chacha::{
@@ -19,8 +19,7 @@ use rand_chacha::{
 // fn read_seed_register() -> u32 {
 //     let mut seed: u32;
 //     unsafe {
-//         //asm!("csrrw {}, seed, x0", out(reg) seed);
-//         asm!("csrr {}, mentropy", out(reg) seed);
+//         asm!("csrrw {}, seed, x0", out(reg) seed);
 //     }
 //     seed
 // }

@@ -9,6 +9,10 @@ pub struct RsaKey {
 }
 
 impl RsaKey {
+    // pub fn new() -> RsaKey {
+    //     generate_rsa_key()
+    // }
+
     pub fn public_key(&self) -> (u64, u64) {
         (self.e, self.n)
     }
